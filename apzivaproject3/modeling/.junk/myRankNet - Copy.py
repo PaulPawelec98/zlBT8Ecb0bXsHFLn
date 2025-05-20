@@ -1,0 +1,135 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr  4 17:27:43 2025
+
+@author: Paul
+"""
+
+# %% setup
+# Date
+from datetime import datetime
+
+# My Pairwise RankNet Model
+import torch
+from torch import nn, optim
+from torch.utils.data import Dataset, DataLoader
+from sklearn.model_selection import train_test_split
+
+# Setup -----------------------------------------------------------------------
+import os
+import sys
+from pathlib import Path
+
+PROJ_ROOT = Path(__file__).resolve().parents[2]
+os.chdir(PROJ_ROOT)
+
+if str(PROJ_ROOT) not in sys.path:
+    sys.path.append(str(PROJ_ROOT))
+
+try:
+    from apzivaproject3.config import (
+        PROCESSED_DATA_DIR,
+        MODELS_DIR,
+        MODELING_DIR
+        )
+
+    if str(MODELING_DIR) not in sys.path:
+        sys.path.append(str(MODELING_DIR))
+
+except Exception as e:
+    print(f"Error importing config: {e}")  # Or handle it in some other way
+# -----------------------------------------------------------------------------
+
+# %% RankNet Model
+
+
+class RankDataset(Dataset):
+    def __init__(self, X, y):
+        self.X = torch.tensor(X.values, dtype=torch.float32)
+        self.y = torch.tensor(y.values, dtype=torch.float32)
+
+    def __len__(self):
+        return len(self.X)
+
+    def __getitem__(self, idx):
+        return self.X[idx], self.y[idx]
+
+
+class RankNet(nn.Module):
+    def __init__(self, input_size, hidden_size):
+        super().__init__()
+        print(f"""Initializing RankNet with input_size={input_size},
+              hidden_size={hidden_size}"""
+              )
+        self.input = nn.Linear(input_size, hidden_size)
+        self.hidden = nn.Linear(hidden_size, hidden_size)
+        self.output = nn.Linear(hidden_size, 1)
+        self.activation = nn.ReLU()  # cuts negative scores.
+
+    def forward(self, x1, x2):
+        h1 = self.activation(self.hidden(self.activation(self.input(x1))))
+        h2 = self.activation(self.hidden(self.activation(self.input(x2))))
+        return self.output(h1) - self.output(h2)
+
+
+def Train_RankNet_Pairwise(df):
+    # Copy data
+    rankdata = df.copy()
+
+    # Split data
+    X = rankdata.loc[:, rankdata.columns[:-2]]
+    y = rankdata["rank"]
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.75, random_state=1
+    )
+
+    # Check if GPU is available
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"CUDA?: {torch.cuda.is_available()}")
+
+    # Dataset and DataLoader
+    train_dataset = RankDataset(X_train, y_train)
+
+    train_loader = DataLoader(
+        train_dataset, batch_size=1, shuffle=True, num_workers=0
+        )
+
+    # Model setup
+    input_size = X.shape[1]
+    hidden_size = 16
+    model = RankNet(input_size, hidden_size)
+    model.to(device)  # send to gpu
+    optimizer = optim.Adam(model.parameters(), lr=0.01)
+    criterion = nn.BCEWithLogitsLoss()  # combined Sigmoid layer and BCELoss
+    epoch_range = 1
+
+    # Training loop
+    for epoch in range(epoch_range):
+
+        model.train()
+
+        for i, (x1, y1) in enumerate(train_loader):
+            for j, (x2, y2) in enumerate(train_loader):
+                if j == i or j > i:
+                    continue
+
+                optimizer.zero_grad()
+                diff = model(x1, x2)
+                target = torch.tensor([[1.0]] if y1 > y2 else [[0.0]])
+                loss = criterion(diff, target)
+                loss.backward()
+                optimizer.step()
+
+                print(f"Epoch {epoch}, Pair ({i},{j}) Loss: {loss.item()}")
+
+    # Save the trained model
+    date_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    model_path = MODELS_DIR / f"myranknet/myranknet_{date_str}.pt"
+    torch.save(model.state_dict(), model_path)
+    print(f"Model saved to {model_path}")
+
+
+# if __name__ == "__main__":
+#     rankdata = pd.read_csv(PROCESSED_DATA_DIR / "rankdata.csv")
+#     Train_RankNet_Pairwise(rankdata)

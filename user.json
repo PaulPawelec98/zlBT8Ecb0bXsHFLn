@@ -1,0 +1,20 @@
+{
+    "target_settings": {
+        "target_string": "aspiring human resources",
+        "penalty_string": "data analyst"
+    },
+    "starred_candidates": [
+        10,
+        14,
+        15,
+        18,
+        200,
+        500,
+        700,
+        900,
+        1000
+    ],
+    "ranknet": {
+        "hidden_size": 64
+    }
+}
