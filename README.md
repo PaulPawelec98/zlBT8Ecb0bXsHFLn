@@ -43,17 +43,21 @@ The project follows a structured organization to maintain clarity and scalabilit
 
 To set up the project environment, follow these steps:
 
-    Clone the repository:
+Clone the repository:
 
+```bash
 git clone https://github.com/PaulPawelec98/zlBT8Ecb0bXsHFLn.git
 cd zlBT8Ecb0bXsHFLn
+```
 
 Create and activate a virtual environment:
 
 Using Conda:
 
+```bash
 conda env create -f environment.yml
 conda activate apzivaproject3
+```
 
 ## Acknowledgments
 
