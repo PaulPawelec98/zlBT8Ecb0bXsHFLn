@@ -10,7 +10,7 @@ This project is designed to facilitate HR talent search processes. It leverages 
 
 ## Dataset
 
-he data comes from our sourcing efforts. We removed any field that could directly reveal personal details and gave a unique identifier for each candidate.
+The data comes from our sourcing efforts. We removed any field that could directly reveal personal details and gave a unique identifier for each candidate.
 
     id : unique identifier for candidate (numeric)
     job_title : job title for candidate (text)
