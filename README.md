@@ -7,34 +7,31 @@
 ## Overview
 
 This project is designed to facilitate HR talent search by leveraging data science techniques. It aims to streamline the process of identifying and evaluating potential candidates through data-driven methodologies.
-Dataset
 
-The repository includes datasets pertinent to HR analytics. Notably:
+## Dataset
 
-    eval_data.json: Contains evaluation data used for model assessment.
+The repository includes datasets pertinent to HR analytics.
 
-    user.json: Comprises user-related data essential for training and validation processes.
+The data comes from sourcing efforts. Any field that could directly reveal personal details has been removed and each candidate is given a unique identifier.
 
-Note: Ensure compliance with data privacy regulations when handling and sharing these datasets.
-Project Structure
+    id : unique identifier for candidate (numeric)
+    job_title : job title for candidate (text)
+    location : geographical location for candidate (text)
+    connections: number of connections candidate has, 500+ means over 500 (text)
 
 The project follows a structured organization to maintain clarity and scalability:
 
-├── LICENSE             <- License information.
-├── Makefile            <- Automation commands (e.g., `make data`, `make train`).
 ├── README.md           <- Project overview and instructions.
-├── data
-│   ├── external        <- External data sources.
-│   ├── interim         <- Intermediate data processing outputs.
-│   ├── processed       <- Final processed datasets.
-│   └── raw             <- Original raw data.
+├── apzivaproject3      <- All the Scripts Used to Generate the Results
+│   ├── classes         <- Any custom classes I wrote goes here
+│   ├── dataset         <- Scripts related to cleaning the inital data
+│   ├── functions       <- Scripts containing standalone functions
+│   ├── modeling        <- All model training and predictions
+│   ├── setup           <- Scripts for additional cleaning and feature creation
 ├── docs                <- Project documentation.
 ├── notebooks           <- Jupyter notebooks for exploration and analysis.
 ├── references          <- Reference materials and related resources.
 ├── reports             <- Generated reports and visualizations.
-├── src                 <- Source code for data processing and modeling.
-│   ├── __init__.py     <- Makes src a Python module.
-│   └── ...             <- Additional modules and scripts.
 ├── environment.yml     <- Conda environment specifications.
 ├── requirements.txt    <- Python package dependencies.
 ├── setup.cfg           <- Configuration for package distribution.
@@ -59,5 +56,6 @@ conda activate apzivaproject3
 
 ## Acknowledgments
 
+Apziva for providing the dataset and project framework.​ The open-source community for their invaluable tools and libraries.​
 
 
