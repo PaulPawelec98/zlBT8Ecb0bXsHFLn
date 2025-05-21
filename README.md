@@ -21,22 +21,7 @@ The data comes from sourcing efforts. Any field that could directly reveal perso
 
 The project follows a structured organization to maintain clarity and scalability:
 
-├── README.md           <- Project overview and instructions.
-├── apzivaproject3      <- All the Scripts Used to Generate the Results
-│   ├── classes         <- Any custom classes I wrote goes here
-│   ├── dataset         <- Scripts related to cleaning the inital data
-│   ├── functions       <- Scripts containing standalone functions
-│   ├── modeling        <- All model training and predictions
-│   ├── setup           <- Scripts for additional cleaning and feature creation
-├── docs                <- Project documentation.
-├── notebooks           <- Jupyter notebooks for exploration and analysis.
-├── references          <- Reference materials and related resources.
-├── reports             <- Generated reports and visualizations.
-├── environment.yml     <- Conda environment specifications.
-├── requirements.txt    <- Python package dependencies.
-├── setup.cfg           <- Configuration for package distribution.
-├── pyproject.toml      <- Build system requirements.
-├── main.py             <- Main execution script.
+<pre> ``` ├── README.md <- Project overview and instructions. ├── apzivaproject3 <- All the Scripts Used to Generate the Results │ ├── classes <- Any custom classes I wrote goes here │ ├── dataset <- Scripts related to cleaning the inital data │ ├── functions <- Scripts containing standalone functions │ ├── modeling <- All model training and predictions │ ├── setup <- Scripts for additional cleaning and feature creation ├── docs <- Project documentation. ├── notebooks <- Jupyter notebooks for exploration and analysis. ├── references <- Reference materials and related resources. ├── reports <- Generated reports and visualizations. ├── environment.yml <- Conda environment specifications. ├── requirements.txt <- Python package dependencies. ├── setup.cfg <- Configuration for package distribution. ├── pyproject.toml <- Build system requirements. ├── main.py <- Main execution script. ``` </pre>
 
 ## Installation
 
